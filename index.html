@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Data Processing & Scalability System</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">☁️</span>
+      <div>
+        <p class="eyebrow">DAA / HPC Project</p>
+        <h1>Weather Data Processing & Scalability</h1>
+      </div>
+    </div>
+    <button id="sampleBtn" class="secondary-btn">Load Sample Data</button>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="section-tag">High Performance Computing</p>
+        <h2>Analyze large weather observations with parallel efficiency.</h2>
+        <p>
+          This system processes historical and simulated weather observations to extract
+          key statistical metrics (temperature, humidity, pressure, rainfall, and wind speed).
+          Investigate computational scalability, execution time speedup, and parallel efficiency
+          under OpenMP multi-threading across varying dataset sizes.
+        </p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <span class="label">Problem Domain</span>
+            <strong>Data-Parallel Reduction</strong>
+          </div>
+          <div class="info-card">
+            <span class="label">Parallel Model</span>
+            <strong>OpenMP Shared Memory</strong>
+          </div>
+          <div class="info-card">
+            <span class="label">Focus</span>
+            <strong>Execution Time & Scalability</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel uploader-panel">
+        <h3>Upload Weather CSV</h3>
+        <label class="upload-box" for="csvFile">
+          <input id="csvFile" type="file" accept=".csv" />
+          <span id="fileNameDisplay">Choose CSV file or drag here</span>
+        </label>
+
+        <div class="file-meta">
+          <span>Supported formats:</span>
+          <code>AWS Pangandaran (10+ cols) or Standard Weather CSV (6 cols)</code>
+        </div>
+
+        <div class="thread-controls">
+          <div class="range-header">
+            <label for="threadRange">OpenMP Threads Configuration</label>
+            <span id="threadValue">4</span>
+          </div>
+          <input id="threadRange" type="range" min="1" max="16" value="4" />
+        </div>
+
+        <div class="thread-summary">
+          <div>
+            <span>Threads</span>
+            <strong id="selectedThreads">4</strong>
+          </div>
+          <div>
+            <span>Approx. Time</span>
+            <strong id="approxTimeBadge">0.00 ms</strong>
+          </div>
+          <div>
+            <span>Efficiency</span>
+            <strong id="selectedEfficiency">80%</strong>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="analyseBtn" class="primary-btn">Analyze Dataset</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="results-section">
+      <div class="result-header">
+        <h3>Dataset Summary & Statistical Indicators</h3>
+        <span id="statusBadge" class="status-badge">Ready</span>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Valid Records</span>
+          <strong id="recordsValue">0</strong>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Avg Temp</span>
+          <strong id="avgTempValue">0.00 °C</strong>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Avg Humidity</span>
+          <strong id="avgHumidityValue">0.00 %</strong>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Total Rainfall</span>
+          <strong id="totalRainValue">0.00 mm</strong>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Avg Wind Speed</span>
+          <strong id="avgWindValue">0.00 km/h</strong>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Avg Pressure</span>
+          <strong id="avgPressureValue">0.00 hPa</strong>
+        </div>
+        <div class="stat-card highlight-stat">
+          <span class="stat-label">Approx. Exec Time</span>
+          <strong id="approxExecTimeCard">0.00 ms</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel perf-panel">
+      <div class="section-header">
+        <div>
+          <h3>Execution Time & Scalability Analysis</h3>
+          <p class="section-subtitle">Multi-threaded OpenMP execution time modeling and speedup evaluation</p>
+        </div>
+        <span class="badge-tag">Performance Metrics</span>
+      </div>
+
+      <div class="perf-metrics-grid">
+        <div class="perf-card">
+          <span class="perf-label">Approx. Sequential Time</span>
+          <strong id="seqTimeValue">0.00 ms</strong>
+          <span class="perf-sub">Single-core baseline (T_seq)</span>
+        </div>
+        <div class="perf-card active-perf-card">
+          <span class="perf-label">Approx. Parallel Time</span>
+          <strong id="parTimeValue">0.00 ms</strong>
+          <span class="perf-sub" id="parThreadsSub">Active: 4 OpenMP threads</span>
+        </div>
+        <div class="perf-card">
+          <span class="perf-label">Estimated Speedup</span>
+          <strong id="speedupValue">1.00x</strong>
+          <span class="perf-sub" id="speedupSub">Speedup factor (S = T_seq / T_par)</span>
+        </div>
+        <div class="perf-card">
+          <span class="perf-label">Parallel Efficiency</span>
+          <strong id="efficiencyValue">100%</strong>
+          <span class="perf-sub">Efficiency (E = S / p)</span>
+        </div>
+        <div class="perf-card">
+          <span class="perf-label">Browser Client Time</span>
+          <strong id="browserTimeValue">0.00 ms</strong>
+          <span class="perf-sub">Live JavaScript execution</span>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-header-row">
+          <h4>Scalability by Thread Count</h4>
+          <span class="table-note">Row matches current thread selection</span>
+        </div>
+        <div class="table-responsive">
+          <table class="scalability-table">
+            <thead>
+              <tr>
+                <th>Threads (p)</th>
+                <th>Approx. Exec Time</th>
+                <th>Speedup (S)</th>
+                <th>Efficiency (E)</th>
+                <th>Scalability Characterization</th>
+              </tr>
+            </thead>
+            <tbody id="scalabilityTableBody">
+              <!-- Dynamically populated in app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-header">
+        <h3>Computational Output Log</h3>
+        <span class="table-note">Detailed console report</span>
+      </div>
+      <pre id="resultConsole">No dataset analyzed yet.</pre>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
